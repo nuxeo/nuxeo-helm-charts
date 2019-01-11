@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    draft: {{ default "draft-app" .Values.nuxeo.draft }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.nuxeo.replicaCount }}
+  template:
+    metadata:
+      labels:
+        draft: {{ default "draft-app" .Values.nuxeo.draft }}
+        app: {{ template "fullname" . }}
+{{- if .Values.nuxeo.podAnnotations }}
+      annotations:
+{{ toYaml .Values.nuxeo.podAnnotations | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.nuxeo.image.repository }}:{{ .Values.nuxeo.image.tag }}"
+        imagePullPolicy: {{ .Values.nuxeo.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.nuxeo.service.internalPort }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.nuxeo.probePath }}
+            port: {{ .Values.nuxeo.service.internalPort }}
+          initialDelaySeconds: {{ .Values.nuxeo.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.nuxeo.livenessProbe.periodSeconds }}
+          successThreshold: {{ .Values.nuxeo.livenessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.nuxeo.livenessProbe.timeoutSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.nuxeo.probePath }}
+            port: {{ .Values.nuxeo.service.internalPort }}
+          periodSeconds: {{ .Values.nuxeo.readinessProbe.periodSeconds }}
+          successThreshold: {{ .Values.nuxeo.readinessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.nuxeo.readinessProbe.timeoutSeconds }}
+        volumeMounts:
+          - name: nuxeoconf
+            mountPath: /docker-entrypoint-initnuxeo.d/
+          - name: log
+            mountPath: /var/log/nuxeo
+          - name: binaries
+            mountPath: /binaries
+      securityContext:
+        fsGroup: 1000
+      volumes:
+      - name: nuxeoconf
+        configMap:
+          name: {{ template "fullname" . }}-conf 
+      - name: connect-secret
+        secret:
+          secretName: {{ template "fullname" . }}-connect
+      - name: binaries
+        {{- if .Values.nuxeo.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "fullname" . }}-binaries 
+        {{- else }}
+        emptyDir: {}
+        {{- end }} 
+      - name: log
+        {{- if .Values.nuxeo.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "fullname" . }}-log 
+        {{- else }}
+        emptyDir: {}
+        {{- end }}  

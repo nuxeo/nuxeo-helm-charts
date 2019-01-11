@@ -1,0 +1,49 @@
+{{- if .Values.nuxeo.persistence.enabled }}
+{{- if .Values.nuxeo.persistence.size.binaries }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "fullname" . }}-binaries
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+  {{- if .Values.nuxeo.persistence.storageClass }}
+    volume.beta.kubernetes.io/storage-class: {{ .Values.nuxeo.persistence.storageClass | quote }}
+  {{- else }}
+    volume.alpha.kubernetes.io/storage-class: default
+  {{- end }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.nuxeo.persistence.size.binaries | quote }}
+{{- end }}
+---
+{{- if .Values.nuxeo.persistence.size.tmp }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "fullname" . }}-log
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+  {{- if .Values.nuxeo.persistence.storageClass }}
+    volume.beta.kubernetes.io/storage-class: {{ .Values.nuxeo.persistence.storageClass | quote }}
+  {{- else }}
+    volume.alpha.kubernetes.io/storage-class: default
+  {{- end }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.nuxeo.persistence.size.tmp | quote }}
+{{- end }}
+{{- end }}

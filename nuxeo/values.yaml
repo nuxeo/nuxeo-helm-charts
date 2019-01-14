@@ -43,6 +43,10 @@ nuxeo:
     deploy: false
   redis:
     deploy: false  
+  ingress:
+    enabled: false
+    annotations:
+
   persistence:
     enabled: true
     storageClass: standard

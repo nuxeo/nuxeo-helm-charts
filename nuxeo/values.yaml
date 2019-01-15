@@ -48,7 +48,7 @@ nuxeo:
     annotations:
 
   persistence:
-    enabled: true
+    enabled: false
     storageClass: standard
     size:
       binaries: 10Gi

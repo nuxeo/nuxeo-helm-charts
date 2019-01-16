@@ -1,0 +1,3 @@
+## Values from here can be customized https://github.com/helm/charts/blob/master/stable/mongodb/values.yaml
+mongodb:
+  usePassword: false

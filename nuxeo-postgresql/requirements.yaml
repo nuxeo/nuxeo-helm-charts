@@ -1,0 +1,6 @@
+dependencies:
+  - name: postgresql
+    version: 3.1.0
+    repository: https://kubernetes-charts.storage.googleapis.com/
+    condition: nuxeo.postgresql.deploy
+    alias: postgresql

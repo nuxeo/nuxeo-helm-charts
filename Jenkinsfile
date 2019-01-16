@@ -16,14 +16,17 @@ pipeline {
             sh "jx step helm build"
             sh "jx step helm release"
           }
-   
+          dir('nuxeo-postgresql') {
+            sh "jx step helm build"
+            sh "jx step helm release"
+          }
         }
       }
     }
   }
   post {
-        always {
-          cleanWs()
-        }
+    always {
+      cleanWs()
+    }
   }
 }

@@ -14,12 +14,12 @@ data:
 {{- if .Values.nuxeo.custom_params }}
 {{ toYaml .Values.nuxeo.custom_params | indent 4 }}
 {{- end }}
-{{- if .Values.nuxeo.mongodb.deploy }}
+{{- if .Values.mongodb.deploy}}
     nuxeo.templates=default,mongodb
     nuxeo.mongodb.server=mongodb://{{ .Release.Name }}-mongodb:27017
     nuxeo.mongodb.dbname={{ .Values.nuxeo.mongodb.dbname }} 
 {{- end }}
-{{- if .Values.nuxeo.postgresql.deploy }}
+{{- if .Values.postgresql.deploy  }}
     nuxeo.templates=default,postgresql
     nuxeo.db.name={{ .Values.nuxeo.postgresql.dbname }} 
     nuxeo.db.user={{ .Values.nuxeo.postgresql.username }} 
@@ -27,13 +27,13 @@ data:
     nuxeo.db.host={{ .Release.Name }}-postgresql
     nuxeo.db.port=5432
 {{- end }}
-{{- if .Values.nuxeo.elasticsearch.deploy }}
+{{- if .Values.elasticsearch.deploy }}
     elasticsearch.client=RestClient  
     elasticsearch.clusterName={{ .Values.nuxeo.elasticsearch.clusterName }}
     elasticsearch.addressList={{ .Release.Name }}-elasticsearch-client:9200
     elasticsearch.indexName={{ .Values.nuxeo.elasticsearch.indexName }}
 {{- end }}
-{{- if .Values.nuxeo.kafka.deploy }}
+{{- if .Values.kafka.deploy}}
     kafka.zkServers={{ .Release.Name }}-zookeeper:2181
     {{- if gt .Values.kafka.replicas 2.0 }}
     kafka.bootstrap.servers={{ .Release.Name }}-kafka-0.{{ .Release.Name }}-kafka-headless:9092,{{ .Release.Name }}-kafka-1.{{ .Release.Name }}-kafka-headless:9092,{{ .Release.Name }}-kafka-2.{{ .Release.Name }}-kafka-headless:9092
@@ -45,13 +45,10 @@ data:
     nuxeo.stream.work.enabled=true
     nuxeo.pubsub.provider=stream
 {{- end }}
-{{- if .Values.nuxeo.redis.deploy }}
-    nuxeo.redis.host={ .Release.Name }}-redis
+{{- if .Values.redis.deploy }}
+    nuxeo.redis.host={{ .Release.Name }}-redis
     nuxeo.work.queuing=redis
-{{- end }}
-{{- if .Values.nuxeo.persistence.enabled }}
-    NUXEO_BINARY_STORE=/binaries
- {{- end }}   
+{{- end }}   
   init.sh: |
     #!/bin/sh
 

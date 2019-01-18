@@ -52,12 +52,10 @@ nuxeo:
 
 ## Values from here can be customized https://github.com/helm/charts/blob/master/stable/mongodb/values.yaml
 mongodb:
-  deploy: false
   usePassword: false
 
 ## Override values for postgresql from https://github.com/helm/charts/blob/master/stable/postgresql/values.yaml
 postgresql:
-  deploy: false
   image:
     tag: 9.6.11
   initdbScripts:
@@ -68,7 +66,6 @@ postgresql:
 ## Override values from https://github.com/helm/charts/blob/master/stable/elasticsearch/values.yaml
 ## these are for a staging cluster only, but it needs 2 masters anyway
 elasticsearch:
-  deploy: false
   appVersion: "6.2"
   client:
     replicas: 1
@@ -81,7 +78,6 @@ elasticsearch:
 ## staging values only, no need for 3 replicas and zoopkeper ( must be 1, 3, kafla needs zookeper)
 ## see https://github.com/jenkins-x/jx/issues/2504 
 kafka:
-  deploy: false
   replicas: 1
   zookeeper:
     replicaCount: 1
@@ -92,11 +88,21 @@ kafka:
 ## Override values from https://github.com/helm/charts/blob/master/stable/redis/values.yaml
 ## staging values only, no need for a cluster
 redis:
-  deploy: true
   cluster: 
     enabled: false
   usePassword: false
   master:
     persistence:
-      enabled: false         
+      enabled: false
+
+## These tags are used to control the deployment of these services. 
+## When this chart is deployed directly, to enable any of these pass these tags as true: helm install nuxeo --set tags.mongodb=true 
+## When this chart is use as a dependecy in another subchart, than set the variable nuxeo.mongodb.deploy a true
+
+tags:
+  mongodb: false
+  redis: false
+  kafka: false
+  elasticsearch: false
+  postgresql: false
 

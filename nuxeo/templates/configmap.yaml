@@ -14,12 +14,12 @@ data:
 {{- if .Values.nuxeo.custom_params }}
 {{ toYaml .Values.nuxeo.custom_params | indent 4 }}
 {{- end }}
-{{- if .Values.mongodb.deploy}}
+{{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
     nuxeo.templates=default,mongodb
     nuxeo.mongodb.server=mongodb://{{ .Release.Name }}-mongodb:27017
     nuxeo.mongodb.dbname={{ .Values.nuxeo.mongodb.dbname }} 
 {{- end }}
-{{- if .Values.postgresql.deploy  }}
+{{- if or .Values.postgresql.deploy .Values.tags.postgresql }}
     nuxeo.templates=default,postgresql
     nuxeo.db.name={{ .Values.nuxeo.postgresql.dbname }} 
     nuxeo.db.user={{ .Values.nuxeo.postgresql.username }} 
@@ -27,13 +27,13 @@ data:
     nuxeo.db.host={{ .Release.Name }}-postgresql
     nuxeo.db.port=5432
 {{- end }}
-{{- if .Values.elasticsearch.deploy }}
+{{- if or .Values.elasticsearch.deploy .Values.tags.elasticsearch }}
     elasticsearch.client=RestClient  
     elasticsearch.clusterName={{ .Values.nuxeo.elasticsearch.clusterName }}
     elasticsearch.addressList={{ .Release.Name }}-elasticsearch-client:9200
     elasticsearch.indexName={{ .Values.nuxeo.elasticsearch.indexName }}
 {{- end }}
-{{- if .Values.kafka.deploy}}
+{{- if or .Values.kafka.deploy .Values.tags.kafka}}
     kafka.zkServers={{ .Release.Name }}-zookeeper:2181
     {{- if gt .Values.kafka.replicas 2.0 }}
     kafka.bootstrap.servers={{ .Release.Name }}-kafka-0.{{ .Release.Name }}-kafka-headless:9092,{{ .Release.Name }}-kafka-1.{{ .Release.Name }}-kafka-headless:9092,{{ .Release.Name }}-kafka-2.{{ .Release.Name }}-kafka-headless:9092
@@ -45,10 +45,10 @@ data:
     nuxeo.stream.work.enabled=true
     nuxeo.pubsub.provider=stream
 {{- end }}
-{{- if .Values.redis.deploy }}
-{{- if .Values.mongodb.deploy}}
+{{- if or .Values.redis.deploy .Values.tags.redis }}
+{{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
     nuxeo.templates=default,mongodb,redis
-{{- else if .Values.postgresql.deploy}}
+{{- else if or  .Values.postgresql.deploy  .Values.tags.postgresql }}
     nuxeo.templates=default,postgresql,redis  
 {{- else }}
     nuxeo.templates=default,redis 

@@ -46,8 +46,16 @@ data:
     nuxeo.pubsub.provider=stream
 {{- end }}
 {{- if .Values.redis.deploy }}
-    nuxeo.redis.host={{ .Release.Name }}-redis
+{{- if .Values.mongodb.deploy}}
+    nuxeo.templates=default,mongodb,redis
+{{- else if .Values.postgresql.deploy}}
+    nuxeo.templates=default,postgresql,redis  
+{{- else }}
+    nuxeo.templates=default,redis 
+{{- end }}     
+    nuxeo.redis.host={{ .Release.Name }}-redis-master
     nuxeo.work.queuing=redis
+    nuxeo.redis.enabled=true
 {{- end }}   
   init.sh: |
     #!/bin/sh

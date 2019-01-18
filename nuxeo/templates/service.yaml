@@ -1,11 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-{{- if .Values.nuxeo.service.name }}
-  name: {{ .Values.nuxeo.service.name }}
-{{- else }}
   name: {{ template "fullname" . }}
-{{- end }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 {{- if .Values.nuxeo.service.annotations }}

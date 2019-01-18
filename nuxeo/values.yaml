@@ -53,6 +53,8 @@ nuxeo:
 ## Values from here can be customized https://github.com/helm/charts/blob/master/stable/mongodb/values.yaml
 mongodb:
   usePassword: false
+  persistence:
+    enabled: false
 
 ## Override values for postgresql from https://github.com/helm/charts/blob/master/stable/postgresql/values.yaml
 postgresql:
@@ -62,6 +64,8 @@ postgresql:
     db-init.sql: |
       CREATE ROLE nuxeo WITH PASSWORD 'nuxeo' LOGIN;
       CREATE DATABASE nuxeo ENCODING 'UTF8' OWNER nuxeo;
+  persistence:
+    enabled: false    
 
 ## Override values from https://github.com/helm/charts/blob/master/stable/elasticsearch/values.yaml
 ## these are for a staging cluster only, but it needs 2 masters anyway
@@ -71,8 +75,12 @@ elasticsearch:
     replicas: 1
   master:
     replicas: 2
+    persistence:
+      enabled: false
   data:
-    replicas: 1    
+    replicas: 1
+    persistence: 
+      enabled: false    
 
 ## Override values from https://github.com/helm/charts/blob/master/incubator/kafka/values.yaml
 ## staging values only, no need for 3 replicas and zoopkeper ( must be 1, 3, kafla needs zookeper)
@@ -81,6 +89,8 @@ kafka:
   replicas: 1
   zookeeper:
     replicaCount: 1
+  persistence:
+    enabled: false
   prometheus:
     operator:
       enabled: false 

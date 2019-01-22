@@ -46,6 +46,7 @@ nuxeo:
       binaries: 10Gi
       tmp: 10Gi
     annotations: {}
+  ##packages: nuxeo-web-ui
   custom_params: |-
     ## add any other params that go into nuxeo.conf
 

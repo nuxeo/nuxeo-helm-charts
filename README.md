@@ -70,6 +70,16 @@ helm install -f myvalues.yaml nuxeo --name $my_release --namespace $your_namespa
  ```console
 helm install nuxeo --set nuxeo.image.tag=10.3 --name $my_release --namespace $your_namespace
 ```
+Register the instance and deploy a custom mp:
+```console
+helm install nuxeo --set nuxeo.packages=nuxeo-web-ui,nuxeo.studio_project=$your_project,nuxeo.connect_username=$connect_username,nuxeo.connect_password=$connect_password
+```
+
+or:
+```console
+helm install nuxeo --set nuxeo.packages=nuxeo-web-ui,nuxeo.clid=$your_clid
+```
+
 - You can override any values of the sub-charts in the same name, just by using the sub-chart name as a prefix first 
  ```console
 helm install nuxeo --set mongodb.persistence.enabled=true --name $my_release --namespace $your_namespace

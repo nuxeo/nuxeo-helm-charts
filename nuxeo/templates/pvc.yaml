@@ -3,9 +3,9 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "fullname" . }}-binaries
+  name: {{ template "nuxeo.fullname" . }}-binaries
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "nuxeo.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -27,9 +27,9 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "fullname" . }}-log
+  name: {{ template "nuxeo.fullname" . }}-log
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "nuxeo.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"

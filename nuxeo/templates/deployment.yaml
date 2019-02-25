@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "nuxeo.fullname" . }}
   labels:
     draft: {{ default "draft-app" .Values.nuxeo.draft }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         draft: {{ default "draft-app" .Values.nuxeo.draft }}
-        app: {{ template "fullname" . }}
+        app: {{ template "nuxeo.fullname" . }}
 {{- if .Values.nuxeo.podAnnotations }}
       annotations:
 {{ toYaml .Values.nuxeo.podAnnotations | indent 8 }}
@@ -57,21 +57,21 @@ spec:
       volumes:
       - name: nuxeoconf
         configMap:
-          name: {{ template "fullname" . }}-conf 
+          name: {{ template "nuxeo.fullname" . }}-conf 
       - name: connect-secret
         secret:
-          secretName: {{ template "fullname" . }}-connect
+          secretName: {{ template "nuxeo.fullname" . }}-connect
       - name: binaries
         {{- if .Values.nuxeo.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ template "fullname" . }}-binaries 
+          claimName: {{ template "nuxeo.fullname" . }}-binaries 
         {{- else }}
         emptyDir: {}
         {{- end }} 
       - name: log
         {{- if .Values.nuxeo.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ template "fullname" . }}-log 
+          claimName: {{ template "nuxeo.fullname" . }}-log 
         {{- else }}
         emptyDir: {}
         {{- end }}  

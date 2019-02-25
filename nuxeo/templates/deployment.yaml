@@ -35,19 +35,20 @@ spec:
           httpGet:
             path: {{ .Values.nuxeo.probePath }}
             port: {{ .Values.nuxeo.service.internalPort }}
+          initialDelaySeconds: {{ .Values.nuxeo.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.nuxeo.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.nuxeo.readinessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.nuxeo.readinessProbe.timeoutSeconds }}
         env:
         - name: NUXEO_PACKAGES
           value: {{ .Values.nuxeo.packages }}
-        - name: NUXEO_CLID  
-          value: {{ .Values.nuxeo.clid | quote }}  
+        - name: NUXEO_CLID
+          value: {{ .Values.nuxeo.clid | quote }}
         volumeMounts:
           - name: nuxeoconf
             mountPath: /docker-entrypoint-initnuxeo.d/
           - name: connect-secret
-            mountPath: /opt/nuxeo/connect/ 
+            mountPath: /opt/nuxeo/connect/
           - name: log
             mountPath: /var/log/nuxeo
           - name: binaries
@@ -57,21 +58,21 @@ spec:
       volumes:
       - name: nuxeoconf
         configMap:
-          name: {{ template "nuxeo.fullname" . }}-conf 
+          name: {{ template "nuxeo.fullname" . }}-conf
       - name: connect-secret
         secret:
           secretName: {{ template "nuxeo.fullname" . }}-connect
       - name: binaries
         {{- if .Values.nuxeo.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ template "nuxeo.fullname" . }}-binaries 
+          claimName: {{ template "nuxeo.fullname" . }}-binaries
         {{- else }}
         emptyDir: {}
-        {{- end }} 
+        {{- end }}
       - name: log
         {{- if .Values.nuxeo.persistence.enabled }}
         persistentVolumeClaim:
-          claimName: {{ template "nuxeo.fullname" . }}-log 
+          claimName: {{ template "nuxeo.fullname" . }}-log
         {{- else }}
         emptyDir: {}
-        {{- end }}  
+        {{- end }}

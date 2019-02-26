@@ -1,0 +1,9 @@
+## Override values from https://github.com/helm/charts/blob/master/stable/redis/values.yaml
+## staging values only, no need for a cluster
+redis:
+  cluster: 
+    enabled: false
+  usePassword: false
+  master:
+    persistence:
+      enabled: false

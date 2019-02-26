@@ -24,6 +24,10 @@ pipeline {
             sh "jx step helm build"
             sh "jx step helm release"
           }
+          dir('nuxeo-redis') {
+            sh "jx step helm build"
+            sh "jx step helm release"
+          }
         }
       }
     }

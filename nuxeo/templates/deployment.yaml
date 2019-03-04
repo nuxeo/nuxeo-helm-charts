@@ -44,6 +44,9 @@ spec:
           value: {{ .Values.nuxeo.packages }}
         - name: NUXEO_CLID
           value: {{ .Values.nuxeo.clid | quote }}
+{{- if .Values.nuxeo.envConfig }}
+{{ toYaml .Values.nuxeo.envConfig | indent 8 }}
+{{- end }}
         volumeMounts:
           - name: nuxeoconf
             mountPath: /docker-entrypoint-initnuxeo.d/

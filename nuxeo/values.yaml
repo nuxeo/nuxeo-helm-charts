@@ -48,8 +48,9 @@ nuxeo:
     annotations: {}
   ##packages: nuxeo-web-ui
   custom_params: |-
-    ## add any other params that go into nuxeo.conf
-
+    # add any other params that go into nuxeo.conf
+  ## Define the configuration for the env variables referenced in nuxeo.conf
+  envConfig:
 
 ## Values from here can be customized https://github.com/helm/charts/blob/master/stable/mongodb/values.yaml
 mongodb:

@@ -27,7 +27,6 @@ dependencies:
     alias: kafka
     tags:
         - kafka
-
   - name: redis
     version: 5.2.0
     repository: https://kubernetes-charts.storage.googleapis.com/
@@ -35,4 +34,3 @@ dependencies:
     condition: nuxeo.redis.deploy
     tags:
         - redis
-    

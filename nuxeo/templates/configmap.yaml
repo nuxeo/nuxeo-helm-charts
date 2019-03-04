@@ -11,9 +11,6 @@ metadata:
 data:
   nuxeo.conf: |-
     # Additional nuxeo.conf parameters   
-{{- if .Values.nuxeo.custom_params }}
-{{ toYaml .Values.nuxeo.custom_params | indent 4 }}
-{{- end }}
 {{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
     nuxeo.templates=default,mongodb
     nuxeo.mongodb.server=mongodb://{{ .Release.Name }}-mongodb:27017
@@ -56,7 +53,10 @@ data:
     nuxeo.redis.host={{ .Release.Name }}-redis-master
     nuxeo.work.queuing=redis
     nuxeo.redis.enabled=true
-{{- end }}   
+{{- end }}
+{{- if .Values.nuxeo.custom_params }}
+{{ .Values.nuxeo.custom_params | indent 4 }}
+{{- end }}
   init.sh: |
     #!/bin/sh
     echo $NUXEO_CONNECT_USERNAME;

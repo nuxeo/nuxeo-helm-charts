@@ -50,7 +50,10 @@ nuxeo:
   custom_params: |-
     # add any other params that go into nuxeo.conf
   ## Define the configuration for the env variables referenced in nuxeo.conf
-  envConfig:
+  ## custom_envs allows to define an env variable from a key of a ConfigMap
+  custom_envs:
+  ## custom_envsFrom allows to load the content of a ConfigMap as environment variables
+  custom_envsFrom:
 
 ## Values from here can be customized https://github.com/helm/charts/blob/master/stable/mongodb/values.yaml
 mongodb:

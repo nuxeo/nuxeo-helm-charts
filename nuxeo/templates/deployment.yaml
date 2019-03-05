@@ -42,8 +42,6 @@ spec:
         env:
         - name: NUXEO_PACKAGES
           value: {{ .Values.nuxeo.packages }}
-        - name: NUXEO_CLID
-          value: {{ .Values.nuxeo.clid | quote }}
 {{- if .Values.nuxeo.custom_envs }}
 {{ toYaml .Values.nuxeo.custom_envs | indent 8 }}
 {{- end }}

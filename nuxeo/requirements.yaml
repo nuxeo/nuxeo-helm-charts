@@ -1,13 +1,13 @@
 dependencies:
   - name: mongodb
-    version: 4.0.3
+    version: 5.10.0
     repository: https://kubernetes-charts.storage.googleapis.com/
     condition: nuxeo.mongodb.deploy
     alias: mongodb
     tags:
         - mongodb   
   - name: postgresql
-    version: 3.1.0
+    version: 3.13.1
     repository: https://kubernetes-charts.storage.googleapis.com/
     condition: nuxeo.postgresql.deploy
     alias: postgresql

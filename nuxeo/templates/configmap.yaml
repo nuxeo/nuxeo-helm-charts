@@ -10,22 +10,22 @@ metadata:
     role: config
 data:
   nuxeo.conf: |-
-    # Additional nuxeo.conf parameters   
+    # Additional nuxeo.conf parameters
 {{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
     nuxeo.templates=default,mongodb
-    nuxeo.mongodb.server=mongodb://{{ .Release.Name }}-mongodb:27017
-    nuxeo.mongodb.dbname={{ .Values.nuxeo.mongodb.dbname }} 
+    nuxeo.mongodb.server=mongodb://{{ .Release.Name }}:27017
+    nuxeo.mongodb.dbname={{ .Values.nuxeo.mongodb.dbname }}
 {{- end }}
 {{- if or .Values.postgresql.deploy .Values.tags.postgresql }}
     nuxeo.templates=default,postgresql
-    nuxeo.db.name={{ .Values.nuxeo.postgresql.dbname }} 
-    nuxeo.db.user={{ .Values.nuxeo.postgresql.username }} 
-    nuxeo.db.password={{ .Values.nuxeo.postgresql.password }} 
+    nuxeo.db.name={{ .Values.nuxeo.postgresql.dbname }}
+    nuxeo.db.user={{ .Values.nuxeo.postgresql.username }}
+    nuxeo.db.password={{ .Values.nuxeo.postgresql.password }}
     nuxeo.db.host={{ .Release.Name }}-postgresql
     nuxeo.db.port=5432
 {{- end }}
 {{- if or .Values.elasticsearch.deploy .Values.tags.elasticsearch }}
-    elasticsearch.client=RestClient  
+    elasticsearch.client=RestClient
     elasticsearch.clusterName={{ .Values.nuxeo.elasticsearch.clusterName }}
     elasticsearch.addressList={{ .Release.Name }}-elasticsearch-client:9200
     elasticsearch.indexName={{ .Values.nuxeo.elasticsearch.indexName }}
@@ -36,7 +36,7 @@ data:
     kafka.bootstrap.servers={{ .Release.Name }}-kafka-0.{{ .Release.Name }}-kafka-headless:9092,{{ .Release.Name }}-kafka-1.{{ .Release.Name }}-kafka-headless:9092,{{ .Release.Name }}-kafka-2.{{ .Release.Name }}-kafka-headless:9092
     {{- else }}
     kafka.bootstrap.servers={{ .Release.Name }}-kafka-0.{{ .Release.Name }}-kafka-headless:9092
-    {{- end }}  
+    {{- end }}
     kafka.topicPrefix=nuxeo-
     kafka.enabled=true
     nuxeo.stream.work.enabled=true
@@ -46,10 +46,10 @@ data:
 {{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
     nuxeo.templates=default,mongodb,redis
 {{- else if or  .Values.postgresql.deploy  .Values.tags.postgresql }}
-    nuxeo.templates=default,postgresql,redis  
+    nuxeo.templates=default,postgresql,redis
 {{- else }}
-    nuxeo.templates=default,redis 
-{{- end }}     
+    nuxeo.templates=default,redis
+{{- end }}
     nuxeo.redis.host={{ .Release.Name }}-redis-master
     nuxeo.work.queuing=redis
     nuxeo.redis.enabled=true
@@ -62,7 +62,7 @@ data:
     echo $NUXEO_CONNECT_USERNAME;
     if [ ! -f $NUXEO_DATA/instance.clid -a -f /opt/nuxeo/connect/connect.properties ]; then
       . /opt/nuxeo/connect/connect.properties
-      if [ -n "$NUXEO_CONNECT_USERNAME" -a -n "$NUXEO_CONNECT_PASSWORD" -a -n "$NUXEO_STUDIO_PROJECT" ]; then  
+      if [ -n "$NUXEO_CONNECT_USERNAME" -a -n "$NUXEO_CONNECT_PASSWORD" -a -n "$NUXEO_STUDIO_PROJECT" ]; then
         echo "---> Registering instance on connect"
         nuxeoctl register $NUXEO_CONNECT_USERNAME $NUXEO_STUDIO_PROJECT dev helm $NUXEO_CONNECT_PASSWORD
       fi

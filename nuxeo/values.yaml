@@ -4,6 +4,13 @@ nuxeo:
     tag: master
     pullPolicy: Always
   replicaCount: 1
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 0.4
+    limits:
+      memory: 2Gi
+      cpu: 1
   service:
     type: ClusterIP
     externalPort: 80
@@ -14,16 +21,16 @@ nuxeo:
   probePath: /nuxeo/runningstatus
   livenessProbe:
     initialDelaySeconds: 100
-    periodSeconds: 10
+    periodSeconds: 20
     successThreshold: 1
-    failureThreshold: 10
+    failureThreshold: 5
     timeoutSeconds: 10
   readinessProbe:
-    periodSeconds: 10
+    periodSeconds: 20
     initialDelaySeconds: 100
     successThreshold: 1
     timeoutSeconds: 10
-    failureThreshold: 3
+    failureThreshold: 5
   terminationGracePeriodSeconds: 10
   mongodb:
     dbname: nuxeo

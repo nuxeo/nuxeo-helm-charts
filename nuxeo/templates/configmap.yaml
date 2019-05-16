@@ -27,7 +27,7 @@ data:
 {{- if or .Values.elasticsearch.deploy .Values.tags.elasticsearch }}
     elasticsearch.client=RestClient
     elasticsearch.clusterName={{ .Values.nuxeo.elasticsearch.clusterName }}
-    elasticsearch.addressList={{ .Release.Name }}-elasticsearch-client:9200
+    elasticsearch.addressList=http://{{ .Release.Name }}-elasticsearch-client:9200
     elasticsearch.indexName={{ .Values.nuxeo.elasticsearch.indexName }}
 {{- end }}
 {{- if or .Values.kafka.deploy .Values.tags.kafka}}

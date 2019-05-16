@@ -13,7 +13,7 @@ data:
     # Additional nuxeo.conf parameters
 {{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
     nuxeo.templates=default,mongodb
-    nuxeo.mongodb.server=mongodb://{{ .Release.Name }}:27017
+    nuxeo.mongodb.server=mongodb://{{ .Release.Name }}-mongodb:27017
     nuxeo.mongodb.dbname={{ .Values.nuxeo.mongodb.dbname }}
 {{- end }}
 {{- if or .Values.postgresql.deploy .Values.tags.postgresql }}

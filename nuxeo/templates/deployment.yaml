@@ -47,6 +47,13 @@ spec:
           successThreshold: {{ .Values.nuxeo.readinessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.nuxeo.readinessProbe.timeoutSeconds }}
         env:
+{{- if .Values.nuxeo.clid }}
+        - name: NUXEO_CLID
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "nuxeo.fullname" . }}-instance-clid
+              key: CLID
+{{- end }}
         - name: NUXEO_PACKAGES
           value: {{ .Values.nuxeo.packages }}
 {{- if .Values.nuxeo.custom_envs }}

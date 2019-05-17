@@ -103,6 +103,78 @@ Use `helm upgrade`:
 helm del --purge $my-release
 ```
 
+## Using minikube
+
+### Install minikube and helm
+
+Follow the [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+and [helm](https://helm.sh/docs/using_helm/#install-helm) installation guides.
+
+Below is the procedure for Ubuntu 18.04:
+```bash
+# Check vm support, the following command must output something
+egrep --color 'vmx|svm' /proc/cpuinfo
+
+# Update apt
+sudo apt update && sudo apt upgrade
+sudo apt install -y apt-transport-https
+
+# Install latest virtualbox deb from
+https://www.virtualbox.org/wiki/Linux_Downloads
+
+# Install kubectl
+sudo snap install kubectl --classic
+kubectl version
+#  -> 1.14.1
+
+# Install minikube
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+chmod +x minikube
+sudo mv minikube /usr/local/bin
+
+# Install helm
+sudo snap install helm --classic
+
+```
+### Init minikube and helm
+
+```bash
+# start with a bigger VM
+minikube start --cpus 4 --memory 8192 --disk-size 10g
+
+# enable some addons
+minikube addons enable ingress
+minikube addons enable storage-provisioner
+
+# init helm
+helm init --history-max 200
+
+# enable incubator repo needed for Kafka
+helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+
+helm repo update
+
+# test the dashboard
+minikube dashboard
+```
+
+Then try to deploy a nuxeo:
+
+```bash
+helm install \
+ --name my-nuxeo \
+ --debug \
+ --set nuxeo.packages=nuxeo-web-ui \
+ --set tags.mongodb=true \
+ --set tags.elasticsearch=true,elasticsearch.deploy=true,nuxeo.elasticsearch.deploy=true \
+ --set nuxeo.ingress.enabled=true \
+ --set nuxeo.clid='<insert the content of your instance.clid file in a single line replacing the new line with --' \
+  nuxeo
+```
+
+Nuxeo will be exposed on `http://$(minikube ip)/`
+
+
 # About Nuxeo
 
 Nuxeo dramatically improves how content-based applications are built, managed and deployed, making customers more agile, innovative and successful. Nuxeo provides a next generation, enterprise ready platform for building 

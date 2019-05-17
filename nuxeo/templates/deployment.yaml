@@ -72,6 +72,27 @@ spec:
             mountPath: /var/log/nuxeo
           - name: binaries
             mountPath: /binaries
+      initContainers:
+{{- if or .Values.elasticsearch.deploy .Values.tags.elasticsearch }}
+      - name: init-elasticsearch
+        image: busybox
+        command: ['sh', '-c', 'until nc -w1 {{ .Release.Name }}-elasticsearch-client 9200; do echo "waiting for elastic"; sleep 2; done;']
+{{- end }}
+{{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
+      - name: init-mongodb
+        image: busybox
+        command: ['sh', '-c', 'until nc -w1 {{ .Release.Name }}-mongodb 27017; do echo "waiting for mongodb"; sleep 2; done;']
+{{- end }}
+{{- if or .Values.postgresql.deploy .Values.tags.postgresql }}
+      - name: init-postgresql
+        image: busybox
+        command: ['sh', '-c', 'until nc -w1 {{ .Release.Name }}-postgresql 5432; do echo "waiting for postgresql"; sleep 2; done;']
+{{- end }}
+{{- if or .Values.kafka.deploy .Values.tags.kafka}}
+      - name: init-kafka
+        image: busybox
+        command: ['sh', '-c', 'until nc -w1 {{ .Release.Name }}-0.{{ .Release.Name }}-headless 9092; do echo "waiting for kafka"; sleep 2; done;']
+{{- end }}
       securityContext:
         fsGroup: 1000
       volumes:

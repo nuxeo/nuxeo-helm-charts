@@ -72,6 +72,12 @@ spec:
             mountPath: /var/log/nuxeo
           - name: binaries
             mountPath: /binaries
+{{- if or .Values.elasticsearch.deploy .Values.tags.elasticsearch }}
+      initContainers:
+      - name: init-elasticsearch
+        image: busybox
+        command: ['sh', '-c', 'until wget -O/dev/null -q {{ .Release.Name }}-elasticsearch-client:9200 2>/dev/null; do echo waiting for {{ .Release.Name }}-elasticsearch-client; sleep 2; done;']
+{{- end }}
       securityContext:
         fsGroup: 1000
       volumes:

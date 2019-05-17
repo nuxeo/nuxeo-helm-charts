@@ -1,9 +1,9 @@
-## Nuxeo Helm Chart
+# Nuxeo Helm Chart
 /!\ NOT PRODUCTION READY, TESTING PURPOSE ONLY /!\
 
 >WARNING
 The `nuxeo` chart deploys additional external services (`Mongo`, `Postgresql`, `ES`, etc), but is not a production ready chart.  The main goal of this chart is to be used a base chart when deploying preview and staging envs on JenkinsX. The external services referenced by this helm chart have often another version more suitable for production ( for example Redis vs Redis-HA charts, Mongodb vs Mongodb-Replicaset). Also persistence has been disabled by default on all subcharts.
- ### Dependencies
+## Dependencies
  
  This chart has the following dependencies:
  - [`Postgresql`](https://github.com/helm/charts/blob/master/stable/postgresql/values.yaml) 
@@ -17,7 +17,7 @@ In order to list the dependencies:
  $helm dependency list nuxeo
 ```
  
- #### How to enable/disable dependencies and run Nuxeo with Mongodb, Postgresql, Kafka, etc
+### How to enable/disable dependencies and run Nuxeo with Mongodb, Postgresql, Kafka, etc
 
 - When the chart is **deployed directly**, these dependencies are controlled by the following tags set in the `values.yaml` file:
 ```code
@@ -50,7 +50,7 @@ nuxeo:
     deploy: true
 ```
 
-### Installing the Chart directly
+## Installing the Chart directly
 If you are also deploying any of the dependency charts, make sure you download them before: 
 
 ```console
@@ -84,19 +84,21 @@ helm install nuxeo --set nuxeo.packages=nuxeo-web-ui,nuxeo.clid=$your_clid
  ```console
 helm install nuxeo --set mongodb.persistence.enabled=true --name $my_release --namespace $your_namespace
 ```
-### Upgrading an existing deployment
+
+## Upgrading an existing deployment
 Use `helm upgrade`: 
 - Example: upgrade the existing deployment to enable persistence for the binaries and logs:
 
 ```console
  helm upgrade  $my_release --set nuxeo.persistence.enabled=true nuxeo/ 
 ```
-### See the installed templates
+
+## See the installed templates
 ```console
  helm get manifest $my-release
 ```
 
-### Uninstalling the Chart
+## Uninstalling the Chart
 ```console
 helm del --purge $my-release
 ```

@@ -91,7 +91,7 @@ spec:
 {{- if or .Values.kafka.deploy .Values.tags.kafka}}
       - name: init-kafka
         image: busybox
-        command: ['sh', '-c', 'until nc -w1 {{ .Release.Name }}-0.{{ .Release.Name }}-headless 9092; do echo "waiting for kafka"; sleep 2; done;']
+        command: ['sh', '-c', 'until nc -w1 {{ .Release.Name }}-kafka-headless 9092; do echo "waiting for kafka"; sleep 2; done;']
 {{- end }}
       securityContext:
         fsGroup: 1000

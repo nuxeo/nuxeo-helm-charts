@@ -11,6 +11,9 @@ metadata:
 data:
   nuxeo.conf: |-
     # Additional nuxeo.conf parameters
+    nuxeo.stream.work.log.codec=avro
+    nuxeo.stream.audit.log.codec=avro
+    nuxeo.stream.pubsub.log.codec=avro
 {{- if or .Values.mongodb.deploy .Values.tags.mongodb }}
     nuxeo.templates=default,mongodb
     nuxeo.mongodb.server=mongodb://{{ .Release.Name }}-mongodb:27017
@@ -31,13 +34,8 @@ data:
     elasticsearch.indexName={{ .Values.nuxeo.elasticsearch.indexName }}
 {{- end }}
 {{- if or .Values.kafka.deploy .Values.tags.kafka}}
-    {{- if gt .Values.kafka.replicas 2.0 }}
-    kafka.bootstrap.servers={{ .Release.Name }}-0.{{ .Release.Name }}-headless:9092,{{ .Release.Name }}-1.{{ .Release.Name }}-headless:9092,{{ .Release.Name }}-2.{{ .Release.Name }}-headless:9092
-    {{- else }}
-    kafka.bootstrap.servers={{ .Release.Name }}-0.{{ .Release.Name }}-headless:9092
-    {{- end }}
-    kafka.topicPrefix=nuxeo-
     kafka.enabled=true
+    kafka.bootstrap.servers={{ .Release.Name }}-kafka-headless:9092
     nuxeo.stream.work.enabled=true
     nuxeo.pubsub.provider=stream
 {{- end }}

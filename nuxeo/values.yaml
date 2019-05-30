@@ -156,6 +156,13 @@ redis:
     persistence:
       enabled: false
 
+mongo-backup:
+  schdule: "0 0 */3 * *"
+  aws:
+    bucket: "mongo-backup-bucket"
+    secret: "mongo-backup-aws-secret"
+
+
 ## These tags are used to control the deployment of these services.
 ## When this chart is deployed directly, to enable any of these pass these tags as true: helm install nuxeo --set tags.mongodb=true
 ## When this chart is use as a dependecy in another subchart, than set the variable nuxeo.mongodb.deploy a true

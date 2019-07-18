@@ -85,6 +85,16 @@ postgresql:
 ## these are for a staging cluster only, but it needs 2 masters anyway
 elasticsearch:
   appVersion: "6.2"
+  serviceAccounts:
+    client:
+      create: false
+      name:
+    master:
+      create: false
+      name:
+    data:
+      create: false
+      name:
   client:
     replicas: 1
   master:

@@ -34,6 +34,12 @@ nuxeo:
   terminationGracePeriodSeconds: 10
   mongodb:
     dbname: nuxeo
+    backup:
+      enable: false
+      schedule: "0 0 */3 * *"
+      aws:
+        bucket: "mongo-backup-bucket"
+        secret: "mongo-backup-aws-secret"
   postgresql:
     dbname: nuxeo
     username: nuxeo
@@ -155,15 +161,6 @@ redis:
   master:
     persistence:
       enabled: false
-
-## suspend is true by default make it false to make it running
-mongo_backup:
-  suspend: true
-  schedule: "0 0 */3 * *"
-  aws:
-    bucket: "mongo-backup-bucket"
-    secret: "mongo-backup-aws-secret"
-
 
 ## These tags are used to control the deployment of these services.
 ## When this chart is deployed directly, to enable any of these pass these tags as true: helm install nuxeo --set tags.mongodb=true

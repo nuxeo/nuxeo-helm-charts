@@ -119,8 +119,10 @@ redis:
     persistence:
       enabled: false
 
-mongo-backup:
-  schdule: "0 0 */3 * *"
+## suspend is true by default make it false to make it running
+mongo_backup:
+  suspend: true
+  schedule: "0 0 */3 * *"
   aws:
     bucket: "mongo-backup-bucket"
     secret: "mongo-backup-aws-secret"

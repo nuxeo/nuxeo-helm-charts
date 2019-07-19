@@ -8,7 +8,8 @@ metadata:
     heritage: "{{ .Release.Service }}"
   name: {{ template "nuxeo.fullname" . }}-cron-backup
 spec:
-  schedule: {{ .Values.mongo-backup.schedule }}
+  suspend: {{ .Values.mongo_backup.suspend }}
+  schedule: {{ .Values.mongo_backup.schedule }}
   jobTemplate:
     spec:
       template:
@@ -35,16 +36,16 @@ spec:
             image: 'mesosphere/aws-cli:latest'
             env:
               - name: BUCKET
-                value: {{ .Values.mongo-backup.aws.bucket }}
+                value: {{ .Values.mongo_backup.aws.bucket }}
               - name: AWS_ACCESS_KEY_ID
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.mongo-backup.aws.secret }}
+                    name: {{ .Values.mongo_backup.aws.secret }}
                     key: aws_key
               - name: AWS_SECRET_ACCESS_KEY
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.mongo-backup.aws.secret }}
+                    name: {{ .Values.mongo_backup.aws.secret }}
                     key: aws_secret
               - name: POD_NAME
                 valueFrom:

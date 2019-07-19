@@ -1,3 +1,4 @@
+{{- if .Values.nuxeo.mongodb.backup.enable }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -8,8 +9,7 @@ metadata:
     heritage: "{{ .Release.Service }}"
   name: {{ template "nuxeo.fullname" . }}-cron-backup
 spec:
-  suspend: {{ .Values.mongo_backup.suspend }}
-  schedule: {{ .Values.mongo_backup.schedule }}
+  schedule: {{ .Values.nuxeo.mongodb.backup.schedule }}
   jobTemplate:
     spec:
       template:
@@ -36,16 +36,16 @@ spec:
             image: 'mesosphere/aws-cli:latest'
             env:
               - name: BUCKET
-                value: {{ .Values.mongo_backup.aws.bucket }}
+                value: {{ .Values.nuxeo.mongodb.backup.aws.bucket }}
               - name: AWS_ACCESS_KEY_ID
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.mongo_backup.aws.secret }}
+                    name: {{ .Values.nuxeo.mongodb.backup.aws.secret }}
                     key: aws_key
               - name: AWS_SECRET_ACCESS_KEY
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.mongo_backup.aws.secret }}
+                    name: {{ .Values.nuxeo.mongodb.backup.aws.secret }}
                     key: aws_secret
               - name: POD_NAME
                 valueFrom:
@@ -59,3 +59,4 @@ spec:
           volumes:
             - name: mongo-cache
               emptyDir: {}
+{{- end }}

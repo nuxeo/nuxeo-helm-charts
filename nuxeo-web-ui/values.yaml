@@ -1,7 +1,7 @@
 nuxeo:
   webui:
     image:
-      repository: jenkins-x-docker-registry:5000/nuxeo/nuxeo-web-ui
+      repository: docker.packages.nuxeo.com/nuxeo/nuxeo-web-ui
       tag: 3.0.0-SNAPSHOT
       pullPolicy: Always
     service:

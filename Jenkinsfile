@@ -1,3 +1,12 @@
+void buildAndRelease() {
+  try {
+    sh "jx step helm build"
+    sh "jx step helm release"
+  } catch(err) {
+    echo hudson.Functions.printThrowable(err)
+  }
+}
+
 pipeline {
   agent {
     label "jenkins-jx-base"
@@ -13,20 +22,19 @@ pipeline {
       steps {
         container('jx-base') {
           dir('nuxeo') {
-            sh "jx step helm build"
-            sh "jx step helm release"
+           buildAndRelease()
+          }
+          dir('nuxeo-web-ui') {
+            buildAndRelease()
           }
           dir('nuxeo-mongodb') {
-            sh "jx step helm build"
-            sh "jx step helm release"
+            buildAndRelease()
           }
           dir('nuxeo-postgresql') {
-            sh "jx step helm build"
-            sh "jx step helm release"
+            buildAndRelease()
           }
           dir('nuxeo-redis') {
-            sh "jx step helm build"
-            sh "jx step helm release"
+            buildAndRelease()
           }
         }
       }

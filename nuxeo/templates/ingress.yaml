@@ -13,7 +13,21 @@ metadata:
       {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
+{{- if .Values.nuxeo.ingress.hosts }}
+  rules:
+    {{- range .Values.nuxeo.ingress.hosts }}
+      {{- $url := splitList "/" . }}
+    - host: {{ first $url }}
+      http:
+        paths:
+          - path: /{{ rest $url | join "/" }}
+            backend:
+              serviceName: {{ template "nuxeo.fullname" $ }}
+              servicePort: {{ $.Values.nuxeo.service.externalPort}}
+    {{- end }}
+{{- else }}
   backend:
     serviceName: {{ template "nuxeo.fullname" . }}
     servicePort: {{ .Values.nuxeo.service.externalPort}}
+{{- end -}}
 {{- end -}}

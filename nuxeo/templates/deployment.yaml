@@ -16,6 +16,9 @@ spec:
       labels:
         draft: {{ default "draft-app" .Values.nuxeo.draft }}
         app: {{ template "nuxeo.fullname" . }}
+{{- with .Values.nuxeo.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
 {{- if .Values.nuxeo.podAnnotations }}
       annotations:
 {{ toYaml .Values.nuxeo.podAnnotations | indent 8 }}

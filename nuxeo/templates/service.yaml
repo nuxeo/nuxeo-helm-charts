@@ -4,6 +4,9 @@ metadata:
   name: {{ template "nuxeo.fullname" . }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+{{- with .Values.nuxeo.service.labels }}
+{{ toYaml . | indent 4 }}
+{{- end }}
 {{- if .Values.nuxeo.service.annotations }}
   annotations:
 {{ toYaml .Values.nuxeo.service.annotations | indent 4 }}

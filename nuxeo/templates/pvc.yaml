@@ -9,6 +9,9 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
+{{- with .Values.nuxeo.persistence.labels }}
+{{ toYaml . | indent 4 }}
+{{- end }}
   annotations:
   {{- if .Values.nuxeo.persistence.storageClass }}
     volume.beta.kubernetes.io/storage-class: {{ .Values.nuxeo.persistence.storageClass | quote }}
@@ -33,6 +36,9 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
+{{- with .Values.nuxeo.persistence.labels }}
+{{ toYaml . | indent 4 }}
+{{- end }}
   annotations:
   {{- if .Values.nuxeo.persistence.storageClass }}
     volume.beta.kubernetes.io/storage-class: {{ .Values.nuxeo.persistence.storageClass | quote }}

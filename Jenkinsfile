@@ -21,9 +21,6 @@ pipeline {
       }
       steps {
         container('jx-base') {
-          dir('nuxeo') {
-           buildAndRelease()
-          }
           dir('nuxeo-web-ui') {
             buildAndRelease()
           }
